@@ -1,0 +1,12 @@
+Rating: 1 Stars
+Comment: great 5 star test
+--------------------------
+Rating: 2 Stars
+Comment: test 4 star
+--------------------------
+Rating: 5 Stars
+Comment: test 1
+--------------------------
+Rating: 4 Stars
+Comment: test 2
+--------------------------

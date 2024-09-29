@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> <!-- Poppins Font -->
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+    <style>
+        /* Add CSS to apply Poppins font */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Set page background to black */
+        }
+        .feedback-section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .logo-container {
+            display: inline-block;
+            background-color: white; /* Circle background color */
+            border-radius: 50%; /* Make it circular */
+            padding: 20px; /* Add padding to enlarge the circle */
+            margin-bottom: 20px; /* Space below the logo */
+        }
+        .logo {
+            width: 80px; /* Adjust size as needed */
+        }
+        .header {
+            font-weight: 600;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white; /* Set header text color to white */
+        }
+        .rating-message {
+            font-weight: 500;
+            font-size: 18px;
+            margin: 10px 0;
+            color: white; /* Set rating message color to white */
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .stars input {
+            display: none;
+        }
+        .stars label {
+            font-size: 40px;
+            color: #ccc; /* Neutral color for stars */
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .stars input:checked ~ label {
+            color: orange; /* Color of the stars when selected */
+        }
+        .feedback-message {
+            margin-top: 20px;
+        }
+        .textarea {
+            margin: 15px 0;
+        }
+        .submit-btn {
+            background-color: orange; /* Set submit button color to orange */
+            color: black; /* Text color for the button */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #c50000; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <section class="feedback-section">
+        <h1 class="header">We value your feedback!<br>Please rate us below:</h1>
+        <div class="feedback-container">
+            <div class="stars">
+                <input type="radio" name="rating" id="star-1" value="1">
+                <label for="star-1" class="fas fa-star"></label>
+
+                <input type="radio" name="rating" id="star-2" value="2">
+                <label for="star-2" class="fas fa-star"></label>
+
+                <input type="radio" name="rating" id="star-3" value="3">
+                <label for="star-3" class="fas fa-star"></label>
+
+                <input type="radio" name="rating" id="star-4" value="4">
+                <label for="star-4" class="fas fa-star"></label>
+
+                <input type="radio" name="rating" id="star-5" value="5">
+                <label for="star-5" class="fas fa-star"></label>
+            </div>
+            <div class="feedback-message">
+                <header class="rating-message" id="feedback-text"></header> <!-- Blank default message -->
+                <div class="textarea">
+                    <textarea id="comment" cols="30" placeholder="Leave your comments..."></textarea>
+                </div>
+                <button class="submit-btn" id="submit-btn">Submit</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const stars = document.querySelectorAll('.stars input');
+        const feedbackText = document.getElementById('feedback-text');
+        const submitButton = document.getElementById('submit-btn');
+
+        stars.forEach(star => {
+            star.addEventListener('change', function() {
+                const value = this.value;
+                feedbackText.innerHTML = getEmojiMessage(value);
+            });
+        });
+
+        function getEmojiMessage(value) {
+            switch(value) {
+                case '5': return "I Hate this 😠";  
+                case '4': return "I don't Like this 🙄"; 
+                case '3': return "It's okay 😄"; 
+                case '2': return "I Like this 😎"; 
+                case '1': return "I Love this 🤩";  
+                default: return '';
+            }
+        }
+
+        // Function to send data to Google Sheets
+        async function sendDataToGoogleSheets(rating, comment) {
+            const url = "https://script.google.com/macros/s/AKfycbyry6L9znZ0OQTf0rk7s6fAWtIFCN49dQE4CNg0tLUUq7FsIRxr8iOjHKIjFSX6aODq/exec"; // Your Google Sheets URL
+            const data = { rating, comment }; // Data to be sent
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Feedback submitted successfully!');
+                // Clear the rating and comment after submission
+                document.querySelector('input[name="rating"]:checked').checked = false;
+                feedbackText.innerHTML = ''; // Clear the emoji message
+                document.getElementById('comment').value = ''; // Clear the textarea
+            } else {
+                alert('Failed to submit feedback. Please try again.');
+            }
+        }
+
+        // Event listener for the submit button
+        submitButton.addEventListener('click', () => {
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+            const comment = document.getElementById('comment').value;
+
+            if (rating) {
+                sendDataToGoogleSheets(rating, comment);
+            } else {
+                alert('Please select a rating before submitting.');
+            }
+        });
+    </script>
+</body>
+</html>

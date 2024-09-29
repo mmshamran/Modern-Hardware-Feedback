@@ -1,0 +1,92 @@
+body {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif;
+}
+
+.feedback-section {
+    text-align: center;
+    padding: 50px;
+}
+
+.header {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #ff8000; /* Orange color */
+}
+
+.feedback-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(255, 128, 0, 0.6);
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-direction: row-reverse; /* Arrange stars from right to left */
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    font-size: 40px;
+    color: #444;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.stars input:not(:checked) ~ label:hover,
+.stars input:not(:checked) ~ label:hover ~ label {
+    color: #ff8000; /* Orange color on hover */
+}
+
+.stars input:checked ~ label {
+    color: #ff8000; /* Orange color when checked */
+}
+
+.feedback-message {
+    display: block; /* Show feedback message section by default */
+}
+
+.rating-message {
+    font-size: 25px;
+    color: #ff8000; /* Orange color */
+    margin-bottom: 10px;
+}
+
+.textarea {
+    margin-bottom: 15px;
+}
+
+.textarea textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #5c5c5c;
+    background: #181818;
+    color: #fff;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: #ff8000; /* Orange button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #e67e22; /* Darker orange on hover */
+}
+
+
